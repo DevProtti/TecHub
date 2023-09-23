@@ -1,0 +1,28 @@
+:root {
+    --tecbanBlack01: #000f00!important;
+    --tecbanCyan01: #0ff!important;
+    --tecbanCyan02: rgba(0,255,255,0.611764705882353)!important;
+    --tecbanCyan03: #5ff!important;
+    --tecbanCyan04: rgba(0,255,255,0.4666666666666667)!important;
+    --tecbanGray01: #ecebed!important;
+    --tecbanRed01: #ed1846!important;
+    --tecbanWhite01: #fff!important;
+    --tecbanLightGray: #d3d3d3 !important;
+}
+
+
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 62.5%;
+
+}
+
+body {
+    font-family: 'Inter', sans-serif
+}
