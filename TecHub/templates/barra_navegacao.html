@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/estilo_navbar.css' %}">
+    {% block link %}{% endblock %}
+    
+</head>
+<body>
+    <main id="main">
+        <div id="container-pai">
+            <div id="container">
+                <div id="imagem-container">
+                    <img class="imagem" src="{% static 'img/logo-tecban.png' %}" alt="">
+                </div>
+                <ul class="lista">
+                    {% for item in itens_navegacao %}
+                            <li><a id='nav_link' href="{{ item.url }}">{{ item.nome }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% block conteudo %}
+        {% endblock conteudo %}
+    </main> 
+</body>
+</html>

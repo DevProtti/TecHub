@@ -2,7 +2,7 @@ from django.conf.urls.static import static
 from django.urls import path
 
 from core import settings
-from .views import home, login, hub_digital
+from .views import home, login, hub_digital, barra_navegacao
 
 app_name = 'TecHub'
 

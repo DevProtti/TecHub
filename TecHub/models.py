@@ -24,3 +24,12 @@ class CarteiraCliente(models.Model):
 class Moedas(models.Model):
     pass
 
+
+# Items Navegação
+class NavItem(models.Model):
+    nome = models.CharField(max_length=50, null=True)
+    url = models.CharField(max_length=100, null=True)
+    icone = models.CharField(max_length=50, null=True)
+
+
+
