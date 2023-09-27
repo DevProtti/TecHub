@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/estilo_navbar.css' %}">
+    <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
     {% block link %}{% endblock %}
     
 </head>
@@ -17,14 +20,21 @@
                     <img class="imagem" src="{% static 'img/logo-tecban.png' %}" alt="">
                 </div>
                 <ul class="lista">
-                    {% for item in itens_navegacao %}
-                            <li><a id='nav_link' href="{{ item.url }}">{{ item.nome }}</a></li>
+                    {% for item in itens %}
+                        <li class='nav_item'>
+                            <button class='nav-btn'>
+                                <a class="nav_link" name="{{item.nome}}" href='{{item.url}}'>
+                                    <i class="{{item.icone}}" style="color: #ffffff; margin: 0 2rem 0 2rem "></i>{{ item.nome }}
+                                </a>
+                            </button>
+                        </li>
                     {% endfor %}
                 </ul>
             </div>
         </div>
+        
         {% block conteudo %}
         {% endblock conteudo %}
-    </main> 
+    </main>
 </body>
 </html>

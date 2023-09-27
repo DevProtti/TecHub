@@ -33,18 +33,36 @@ def login(request: HttpRequest):
             unsuccess_url = reverse_lazy('TecHub:login')
             return HttpResponseRedirect(redirect_to=unsuccess_url)
 
-@login_required(login_url='login')
-def hub_digital(request):
-    if request.method == 'GET':
-        itens_navegacao = NavItem.objects.all()
-        context = {'itens_navegacao': itens_navegacao}
-        return render(request, template_name='techub/hub/digital_hub.html', context=context)
-
 
 def barra_navegacao(request):
     if request.method == "GET":
-        itens_navegacao = NavItem.objects.all()
+        itens_navegacao = NavItem.objects.order_by('-id')
         return render(request, 'techub/barra_navegacao.html', {'itens_navegacao': itens_navegacao})
+
+
+@login_required(login_url='login')
+def hub_digital(request):
+    if request.method == 'GET':
+        itens_navegacao = NavItem.objects.order_by('-id')
+        context = {'itens': itens_navegacao}
+        return render(request, template_name='techub/hub/hub_index.html', context=context)
+    if request.method == 'POST':
+        pagina = request.POST.get('name')
+        pass
+        success_url = reverse_lazy('TechHub:hub')
+        if pagina == 'Home':
+            success_url = reverse_lazy('TechHub:hub')
+        elif pagina == 'Open Finance':
+            success_url = reverse_lazy('TechHub:open_finance')
+        return HttpResponseRedirect(redirect_to=success_url)
+
+@login_required(login_url='login')
+def open_finance(request):
+    if request.method == 'GET':
+        itens_navegacao = NavItem.objects.order_by('-id')
+        context = {'itens': itens_navegacao}
+        return render(request, template_name='techub/hub/open_finance.html', context=context)
+
 
 
 

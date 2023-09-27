@@ -9,6 +9,7 @@
     --tecbanRed01: #ed1846!important;
     --tecbanWhite01: #fff!important;
     --tecbanLightGray: #d3d3d3 !important;
+    --tecBanDarkGray: #999696 !important;
 }
 
 
@@ -84,17 +85,12 @@ nav ul li a {
     text-decoration: none;
     flex-wrap: nowrap;
     font-size: 1.4rem;
-    color: var(--tecbanLightGray);
+    color: var(--tecbanWhite01);
     font-weight: 500;
     height: 100%;
     transition: 0.35s;
 }
 
-nav ul li button a {
-    justify-content: center;
-    text-align: center;
-    width: 100%;
-}
 
 
 nav ul li a:hover {
@@ -110,8 +106,7 @@ nav ul li button {
     justify-content: center;
     text-decoration: none;
     color: var(--tecbanWhite01);
-    background-color: #000;
-    padding: 0.5rem;
+    background-color: #1c1717;
     font-weight: 700 ;
     height: 110%;
     width: 110%;
@@ -122,8 +117,19 @@ nav ul li button {
 }
 
 nav ul li button:hover {
-    background-color: var(--tecbanLightGray);
-    color: var(--tecbanBlack01);
+    background-color: var(--tecbanWhite01)!important;
+}
+
+nav ul li button a {
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    height:100%;
+    transition: 0.35s
+}
+
+nav ul li button a:hover {
+    color: var(--tecbanRed01);
 }
 
 

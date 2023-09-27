@@ -1,0 +1,27 @@
+{% extends "barra_navegacao.html" %}
+{% load static %}
+{% block title %}Open Finance{% endblock %}
+{% block link %}
+    <link rel="stylesheet" href="{% static 'css/estilo_openfinance.css' %}">
+{% endblock %}
+
+{% block conteudo %}
+    <div id="container-openfinance-pai">
+        <section id="conteudo-openfinance"> 
+            <div class="container-openfinance">
+                <p class='bem-vindo'>
+                    <span class='bem-vindo-nome'><b>Bem-vindo Gabriel</b></span><br>
+                    <span class='data'>Terça-Feira 26 de Setembro às 22:33</span>
+                </p>
+            </div>
+            <div class="form-openfinance">
+                <div class="inputs-openfinance">
+                    <form action="">
+                        <label for="">Teste</label>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+{% endblock conteudo %}

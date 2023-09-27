@@ -1,0 +1,19 @@
+{% extends "barra_navegacao.html" %}
+{% load static %}
+{% block title %}TecHub{% endblock %}
+{% block link %}
+    <link rel="stylesheet" href="{% static 'css/estilo_hub.css' %}">
+{% endblock %}
+
+{% block conteudo %}
+    <div id="conteudo-hub-pai">
+        <section id="conteudo-hub"> 
+            <div class="container-hub">
+                <p class='bem-vindo'>
+                    <span class='bem-vindo-nome'><b>Bem-vindo Gabriel</b></span><br>
+                    <span class='data'>Terça-Feira 26 de Setembro às 22:33</span>
+                </p>
+            </div>
+        </section>
+    </div>
+{% endblock conteudo %}
