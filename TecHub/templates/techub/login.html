@@ -29,4 +29,14 @@
         </div>
     </main>
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const btnLogin = document.querySelector('#btn-etrar');
+    const container = document.querySelector('#principal');
+
+    btnLogin.addEventListener('click', function() {
+        container.classList.add('hide');
+    });
+});
+</script>
 </html>

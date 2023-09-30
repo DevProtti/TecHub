@@ -15,24 +15,37 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500&family=Roboto:wght@300;400;700&display=swap" rel=""/>
 </head>
 <body>
-    <nav id="navbar" >
-        <div class="logo">
-            <img src="{% static 'img/logo-tecban.png' %}" alt="">
-        </div><div class="links">
-            <ul>
-                <li><a href="#">Saiba mais</a></li>
-                <li><a href="#">Sobre nós</a></li>
-                <li><a href="#">Contato</a></li>
-                <li>
-                    <button type="submit"><a href="{% url 'TecHub:login' %}">Login</a></button>
-                </li>
-            </ul>
-        </div>        
-    </nav>
-    <section id="section-video">
-        <video class="video-tecban" width="100%" autoplay loop muted>
-            <source type="video/mp4" src="{%static 'video/video_tecban.mp4'%}">
-        </video>
-    </section>
+    <div class="container">
+        <nav id="navbar" >
+            <div class="logo">
+                <img src="{% static 'img/logo-tecban.png' %}" alt="">
+            </div><div class="links">
+                <ul>
+                    <li><a href="#">Saiba mais</a></li>
+                    <li><a href="#">Sobre nós</a></li>
+                    <li><a href="#">Contato</a></li>
+                    <li>
+                        <button class="btn-login" type="submit"><a href="{% url 'TecHub:login' %}">Login</a></button>
+                    </li>
+                </ul>
+            </div>        
+        </nav>
+        <section id="section-video">
+            <video class="video-tecban" width="100%" autoplay loop muted>
+                <source type="video/mp4" src="{%static 'video/video_tecban.mp4'%}">
+            </video>
+        </section> 
+    </div>
 </body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const btnLogin = document.querySelector('.btn-login');
+    const container = document.querySelector('.container');
+
+    btnLogin.addEventListener('click', function() {
+        container.classList.add('hide');
+    });
+});
+</script>
 </html>

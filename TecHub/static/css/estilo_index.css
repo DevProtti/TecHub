@@ -30,6 +30,21 @@ body {
 }
 
 /*=======================================================================================*/
+
+.container {
+    transform: translateY(0);
+    opacity: 1;
+    transition: transform 1s ease, opacity 1s ease;
+}
+
+.container.hide {
+    transform: translateY(-20px);
+    opacity: 0;
+}
+
+
+
+
 /* Barra de navegação */
 #navbar {
     display: flex;

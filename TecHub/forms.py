@@ -1,4 +1,5 @@
 from django import forms
+from .models import Instituicao, InformacaoClienteOpenFinance
 
 
 class FormLogin(forms.Form):
@@ -6,5 +7,7 @@ class FormLogin(forms.Form):
     senha = forms.CharField(widget=forms.PasswordInput)
 
 
-
-
+class FormInstituicoesUser(forms.ModelForm):
+    class Meta:
+        model = InformacaoClienteOpenFinance
+        fields = '__all__'

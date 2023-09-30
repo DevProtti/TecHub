@@ -45,7 +45,7 @@ body {
 
 #conteudo-hub {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     width: 97%;
     height: 95vh;
     /* border: 1px solid black; */
@@ -73,10 +73,38 @@ div p.bem-vindo {
 
 div p span.bem-vindo-nome {
     font-size: 2.2rem;
+    text-transform: capitalize;
 }
 
 div p span.data {
     font-size: 1.5rem;
     margin-top: -1rem;
     color: #555;
+}
+
+div#instituicoes-user{
+    border: 1px solid black;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    height: 82%;
+    background-color: #2196F3;
+    gap: 10px;
+}
+
+div div#instituicao-usuario {
+    display: flex;
+    border: 1px dashed black;
+    background-color: white;
+    height: 35%;
+    width: 100%;
+}
+
+div.container-foto {
+    display: block;
+    border: 3px solid black;
+}
+
+img.foto-instituicao {
+    border: 3px dashed black;
+    width: 100%
 }

@@ -1,27 +1,119 @@
-{% extends "barra_navegacao.html" %}
-{% load static %}
-{% block title %}Open Finance{% endblock %}
-{% block link %}
-    <link rel="stylesheet" href="{% static 'css/estilo_openfinance.css' %}">
-{% endblock %}
+{% extends "barra_navegacao.html" %} {% load static %} {% block title %}Open
+Finance{% endblock %} {% block link %}
+<link rel="stylesheet" href="{% static 'css/estilo_openfinance.css' %}" />
+{% endblock %} {% block conteudo %}
+<div id="container-openfinance-pai">
+    <section id="conteudo-openfinance">
+        <div class="container-openfinance">
+            <p class="bem-vindo">
+                <span class="bem-vindo-nome"
+                    ><b>Bem-vindo {{ user_info.first_name }}</b></span
+                ><br />
+                <span class="data">{{data}}</span>
+            </p>
+        </div>
+        <div class="form-openfinance">
+            <div class="inputs-openfinance">
+                <input type="hidden" id="url" value="{{ url }}"/>
+                {% for error in erros %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="div-input-campo">
+                        <label class="label" for="instituicao">Instituição</label>
+                        <span class="icone-instituicao">
+                            <i class="fa-solid fa-landmark"></i>
+                        </span class="icone-open">
+                        <select name="instituicao" id="instituicao" required>
+                            <option>Selecione a instituição...</option>
+                            {% for instituicao in info_instituicoes %}
+                            <option class="opcao-instituicao" value="{{ instituicao.id }}">
+                                {{instituicao.nome}}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
 
-{% block conteudo %}
-    <div id="container-openfinance-pai">
-        <section id="conteudo-openfinance"> 
-            <div class="container-openfinance">
-                <p class='bem-vindo'>
-                    <span class='bem-vindo-nome'><b>Bem-vindo Gabriel</b></span><br>
-                    <span class='data'>Terça-Feira 26 de Setembro às 22:33</span>
-                </p>
+                    <div class="div-input-campo">
+                        <label for="agencia">Agência</label><br>
+                        <span class="icone-agencia"><i class="fa-solid fa-house-user"></i></span>
+                        <input
+                            id="agencia"
+                            class="input-campo"
+                            name="agencia"
+                            type="text"
+                            maxlength="5"
+                            placeholder="Digite sua Agência"
+                            required
+                        />
+                    </div>
+
+                    <div class="div-input-campo">
+                        <label for="conta">Conta</label>
+                        <span class="icone-conta">
+                            <i class="fa-solid fa-money-check-dollar"></i>
+                        </span>
+                        <input
+                            id="conta"
+                            class="input-campo"
+                            name="conta"
+                            type="text"
+                            maxlength="8"
+                            placeholder="Digite sua conta com dígito"
+                            required
+                        />
+                    </div>
+
+                    <div class="div-input-campo">
+                        <label for="conta">Senha de acesso</label>
+                        <span class="icone-senha">
+                            <i class="fa-solid fa-key"></i>
+                        </span>
+                        <input
+                            id="senha"
+                            class="input-campo"
+                            name="senha"
+                            type="password"
+                            maxlength="12"
+                            placeholder="Digite a senha de acesso ao app da Instituição"
+                            required
+                        />
+                    </div>
+                    <div id="btn-container">
+                        <button id="btn-cadastar">Cadastrar</button>
+                    </div>
+                </form>
             </div>
-            <div class="form-openfinance">
-                <div class="inputs-openfinance">
-                    <form action="">
-                        <label for="">Teste</label>
-                    </form>
-                </div>
-            </div>
-        </section>
-    </div>
+        </div>
+    </section>
+</div>
+
+{% endblock conteudo %} {% block script %}
+<script src="{% static 'code.jquery.com_jquery-3.7.1.min.js' %}"></script>
+<script src="{% static 'jquery.mask.min.js' %}"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var url = $('#url').val();
+        var item = $('.nav-item')
+        if (url == '/openfinance/') {
+            $('#openfinance').attr('style', 'background-color: #b5a1b1dd!important; border-radius: 10px');
+        }
+
+        $('#conta').mask('0000000-0');
+        $('#agencia').mask('00000');
     
-{% endblock conteudo %}
+
+        const selectElement = document.getElementById('instituicao');
+        const textInput = document.getElementsByClassName('input-campo');
+
+        selectElement.addEventListener('change', function () {
+            if (selectElement.value !== '') {
+                textInput.style.color = 'black'; // Altere a cor do texto para preto quando uma opção for selecionada.
+            } else {
+                textInput.style.color = '#999696 '; // Volte a cor do texto para cinza quando nenhuma opção for selecionada.
+            }
+        });
+    })
+</script>
+{% endblock %}

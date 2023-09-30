@@ -6,9 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/estilo_navbar.css' %}">
-    <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
-    <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
-    <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500&family=Roboto:wght@300;400;700&display=swap" rel=""/>
+
     {% block link %}{% endblock %}
     
 </head>
@@ -23,7 +25,7 @@
                     {% for item in itens %}
                         <li class='nav_item'>
                             <button class='nav-btn'>
-                                <a class="nav_link" name="{{item.nome}}" href='{{item.url}}'>
+                                <a class="nav_link" name="{{item.nome}}" id="{{ item.pagina }}" href='{{ item.url }}'>
                                     <i class="{{item.icone}}" style="color: #ffffff; margin: 0 2rem 0 2rem "></i>{{ item.nome }}
                                 </a>
                             </button>
@@ -36,5 +38,9 @@
         {% block conteudo %}
         {% endblock conteudo %}
     </main>
+    <script>
+    </script>
+    {% block script %}
+    {% endblock %}
 </body>
 </html>

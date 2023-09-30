@@ -6,14 +6,40 @@
 {% endblock %}
 
 {% block conteudo %}
+    <input type="hidden" id="url" value="{{ url }}"/>
     <div id="conteudo-hub-pai">
         <section id="conteudo-hub"> 
             <div class="container-hub">
                 <p class='bem-vindo'>
-                    <span class='bem-vindo-nome'><b>Bem-vindo Gabriel</b></span><br>
-                    <span class='data'>Terça-Feira 26 de Setembro às 22:33</span>
+                    <span class='bem-vindo-nome'><b>Bem-vindo {{ user_info.first_name }}</b></span><br>
+                    <span class='data'>{{data}}</span>
                 </p>
             </div>
+            <div id="instituicoes-user">   
+                {% for instituicao in instituicoes %}
+                    <div id="instituicao-usuario">
+
+                        <i><img  class='foto-instituicao' src="{{ instituicao.instituicao_user.foto_instituicao }}" alt=""></i> 
+
+                        <div>{{instituicao.instituicao_user}}</div>>
+                        <div>{{instituicao.info_instituicao_user.saldo_bancario}}</div>
+                        <div>{{instituicao.info_instituicao_user.saldo_drex}}</div>                        
+                        <div>
+                            <button>Acessar</button>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
         </section>
-    </div>
 {% endblock conteudo %}
+{% block script %}
+<script type="text/javascript">
+    $(document).ready(function () {
+        var url = $('#url').val();
+        var item = $('.nav-item')
+        if (url == '/hub/') {
+            $('#hub').attr('style', 'background-color: #b5a1b1dd!important; border-radius: 10px');
+        }
+    })
+</script>
+{% endblock %}

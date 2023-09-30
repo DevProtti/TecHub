@@ -32,16 +32,23 @@ body {
 
 /* ============================================== */
 
-
-
 #principal {
     height: 100vh;
     font-size: 2rem;
     display: flex;
     justify-content: center;
     align-items: center;
+    transform: translateY(0);
+    opacity: 1;
+    transition: transform 1s ease, opacity 1s ease;
 
 }
+
+#principal.hide {
+    transform: translateY(-20px);
+    opacity: 0;
+}
+
 
 #container {
     box-shadow: 6px 3px 7px var(--tecbanBlack01);
@@ -100,8 +107,11 @@ body {
     border: 2px solid var(--tecbanRed01)
 }
 
+
+
+
 #btn-etrar {
-    width: 40%;
+    width: 75%;
     height: 22%;
     display: flex;
     font-size: 1.6rem ;
@@ -111,7 +121,8 @@ body {
     margin-top: 8%;
     border-radius: 5px;
     border: none;
-    transition: 0.35s
+    transition: 0.35s;
+    background-color: #ddd;
 }
 
 #btn-etrar:hover {
