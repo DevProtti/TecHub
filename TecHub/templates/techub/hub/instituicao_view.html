@@ -1,0 +1,45 @@
+{% extends "barra_navegacao.html" %}
+{% load static %}
+{% block title %}TecHub{% endblock %}
+{% block link %}
+    <link rel="stylesheet" href="{% static 'css/estilo_hub.css' %}">
+{% endblock %}
+
+{% block conteudo %}
+    <input type="hidden" id="url" value="{{ url }}"/>
+    <div id="conteudo-hub-pai">
+        <section id="conteudo-hub"> 
+            <div class="container-hub">
+                <p class='bem-vindo'>
+                    <span class='bem-vindo-nome'><b>Bem-vindo {{ user_info.first_name }}</b></span><br>
+                    <span class='data'>{{data}}</span>
+                </p>
+            </div>
+            <div id="container-info-instituicao">
+                {% if messages %}
+                    {% for m in messages %}
+                        {{m}}
+                    {% endfor %}
+                {% endif %}
+                <div>
+                    <div>
+                        <p>
+                            {{instituicao.info_instituicao_user.saldo_bancario}}
+                            {{instituicao.info_instituicao_user.saldo_drex}}
+                        </p>
+                    </div>
+                    <div>
+                        <button>
+                            <a href="{% url 'TecHub:realiza_cambio' pk=instituicao.pk %}">Câmbio</a>
+                        </button>
+                    </div>
+                    <div>
+                        <button>
+                            <a href="{% url 'TecHub:realiza_tranferencia' pk=instituicao.pk %}">Transferência</a>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>  
+    {% endblock conteudo %} 

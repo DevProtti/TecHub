@@ -15,7 +15,8 @@ class Instituicao(models.Model):
     )
 
     def __str__(self):
-        return self.nome
+        nome = self.nome.split('-')[1].strip()
+        return nome
 
 
 # Info Cliente Instituição

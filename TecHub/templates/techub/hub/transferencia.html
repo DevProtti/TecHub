@@ -1,0 +1,62 @@
+{% extends "barra_navegacao.html" %}
+{% load static %}
+{% block title %}TecHub{% endblock %}
+{% block link %}
+    <link rel="stylesheet" href="{% static 'css/estilo_instituicao_view.css' %}">
+{% endblock %}
+
+{% block conteudo %}
+    <input type="hidden" id="url" value="{{ url }}"/>
+    <div id="conteudo-hub-pai">
+        <section id="conteudo-hub"> 
+            <div class="container-hub">
+                <p class='bem-vindo'>
+                    <span class='bem-vindo-nome'><b>Bem-vindo {{ user_info.first_name }}</b></span><br>
+                    <span class='data'>{{data}}</span>
+                </p>
+            </div>
+            <div id="container-info-instituicao" style="border: 1px solid black; height: 92.5%; font-size: 1.8rem;">
+                <form method="post">
+                    {%csrf_token%}
+                    <div style="border: 1px dashed black; ">
+                        <label for="saldo_drex">Seu saldo em DREX:</label><br>
+                        <input type="text" id='saldo_drex' name='saldo_drex' value="{{instituicao.info_instituicao_user.saldo_drex}}" readonly disabled>
+                        <br><br>
+                        <label for="valor_transferencia">Valor da transferencia</label><br>
+                        <input type="text" maxlength="18" id='valor_transferencia' name='valor_transferencia' value="{{ valor_transferencia }}"><br>
+                        <br><br>
+                        <label for="moeda_destino">Moeda de destino:</label><br>
+                        <select name="moeda_destino" id="moeda_destino">
+                            {% for id, moeda in moedas %}
+                                <option value="{{ id }}">{{ moeda }}</option>
+                            {% endfor %}
+                        </select>
+                        <br><br>
+                        <button type="submit">Enviar</button>
+                        <br><br>
+                        {% if erros.valor_transferencia %}
+                        <div style="margin-left: 20px;">
+                            <ul>
+                                <li>
+                                    {{erros.valor_transferencia}}
+                                </li>
+                            </ul>
+                        </div>
+                        {% endif %}
+                        {{mensagem}}
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>  
+{% endblock conteudo %}
+{% block script %}
+<script src="{% static 'code.jquery.com_jquery-3.7.1.min.js' %}"></script>
+<script src="{% static 'jquery.mask.min.js' %}"></script>
+<script type="text/javascript">
+
+         $(document).ready(function () {
+         $('#valor_transferencia').mask("#.##0,90", {reverse: true})
+     });
+</script>
+{% endblock %}

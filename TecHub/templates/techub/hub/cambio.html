@@ -1,0 +1,39 @@
+{% extends "barra_navegacao.html" %}
+{% load static %}
+{% block title %}TecHub{% endblock %}
+{% block link %}
+    <link rel="stylesheet" href="{% static 'css/estilo_cambio.css' %}">
+{% endblock %}
+
+{% block conteudo %}
+    <input type="hidden" id="url" value="{{ url }}"/>
+    <div id="conteudo-hub-pai">
+        <section id="conteudo-hub"> 
+            <div class="container-hub">
+                <p class='bem-vindo'>
+                    <span class='bem-vindo-nome'><b>Bem-vindo {{ user_info.first_name }}</b></span><br>
+                    <span class='data'>{{data}}</span>
+                </p>
+            </div>
+            <div id="container-info-instituicao">
+                <div>
+                    <form action="" method="post">
+                        {% csrf_token %}
+
+                        {% if erro %}
+                            <ul>
+                                <li style="color: red;">
+                                    {{erro}}
+                                </li>
+                            </ul>
+                        {% endif %}
+                        {{ form.valor_cambio.label }}
+                        {{ form.valor_cambio }}
+
+                        <button type="submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>  
+{% endblock conteudo %} 

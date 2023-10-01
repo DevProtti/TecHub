@@ -1,5 +1,10 @@
 from django import forms
-from .models import Instituicao, InformacaoClienteOpenFinance
+from .models import Instituicao, InformacaoClienteOpenFinance, InfoClienteInstituicao
+from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError
+
+
+from django.utils.translation import gettext_lazy as _
 
 
 class FormLogin(forms.Form):
@@ -7,7 +12,29 @@ class FormLogin(forms.Form):
     senha = forms.CharField(widget=forms.PasswordInput)
 
 
-class FormInstituicoesUser(forms.ModelForm):
-    class Meta:
-        model = InformacaoClienteOpenFinance
-        fields = '__all__'
+class CambioForm(forms.Form):
+    valor_cambio = forms.DecimalField(decimal_places=2, required=True)
+
+
+
+MOEDAS = [
+    (1, 'DREX'),
+    (2, 'e-CNY'),
+    (3, 'Digital Euro '),
+    (4, 'Digital Dollar ')
+]
+
+# class TransferenciaForm(forms.Form):
+#     moeda_origem = forms.ChoiceField(
+#         label="Moeda de destino",
+#         choices=MOEDAS)
+    
+#     valor_trasferencia = forms.DecimalField(
+#         decimal_places=2
+#     )
+
+#     saldo_drex = forms.DecimalField(
+#         decimal_places=2,
+#         required=True
+#     )
+        
