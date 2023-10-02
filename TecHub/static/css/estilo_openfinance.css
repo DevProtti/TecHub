@@ -135,11 +135,18 @@ input {
     border: 1px solid var(--tecBanDarkGray);
 }
 
-select:focus,
+select:focus {
+    border-left: none;
+    outline: 0;
+    box-shadow: 0 0 0;
+}
+
+
 input:focus {
     border: 2px solid var(--tecBanDarkGray);
     border-left: none;
     outline: 0;
+    box-shadow: 0 0 0;
     
 }
 
@@ -188,5 +195,4 @@ input:focus {
     background-color: #cc1212;
     color: var(--tecbanWhite01);
 }
-
 

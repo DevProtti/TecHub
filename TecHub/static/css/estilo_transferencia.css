@@ -20,7 +20,6 @@
 
 html {
     font-size: 62.5%;
-    
 }
 
 body {
@@ -95,7 +94,7 @@ div div.inputs-openfinance {
     flex-direction: column;
     width: 60%;
     height: 92%;
-    border: 2px solid red;
+    /* border: 2px solid red; */
 }
 
 label {
@@ -110,7 +109,7 @@ label {
 
 .div-input-campo {
     height: 20%;
-    border: 1px dashed black;
+    /* border: 1px dashed black; */
     margin: 0 0 1rem 0;  
     display: flex;
     align-items: center;
@@ -147,14 +146,13 @@ label {
 #conta {
     width: 85%;
     height: 100%;
-    display: flex;
 }
 
 .input-conta-agencia{
     display: flex;
     flex-direction: row;
-    margin-top: 1%;
-    height: 49%;
+    margin-top: 2%;
+    height: 52%;
 }
 
 .icone-agencia,
@@ -177,11 +175,18 @@ input {
     border: 1px solid var(--tecBanDarkGray);
 }
 
-select:focus,
+select:focus {
+    border-left: none;
+    outline: 0;
+    box-shadow: 0 0 0;
+}
+
+
 input:focus {
     border: 2px solid var(--tecBanDarkGray);
     border-left: none;
     outline: 0;
+    box-shadow: 0 0 0;
     
 }
 
@@ -199,40 +204,66 @@ input:focus {
     border-radius: 10px 0 0 10px;
 }
 
-.saldo-necessario {
-    display: flex;
-}
-
-
-
-#btn-container {
-    height: 15%;
+.div-input-campo-saldo-necessario {
+    min-height: 20%;
+    max-height: 20%;
     /* border: 1px dashed black; */
-    margin-top: 4rem;  
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-wrap: wrap;  
+    flex-wrap: wrap;
+    flex-direction: column ;  
+    font-size: 1.5rem;
+    color: #999696ee;
 }
 
 
-#btn-cadastar {
-        width: 50%;
-        height: 100%;
-        display: flex;
-        font-size: 1.6rem ;
-        justify-content: center;
-        align-items: center;
-        border-radius: 10px;
-        border: none;
-        background-color: #888;
-        color: var(--tecbanWhite01);
-        transition: 0.35s
-}   
 
-#btn-cadastar:hover {
+#container-btns {
+    /* border: 1px dashed black; */
+    height: 12%;
+    margin-top: 2%;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.btn {
+    width: 35%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 5px;
+    border: none;
+    background-color: #888;
+    color: var(--tecbanWhite01);
+    transition: 0.35s
+}
+
+.btn:hover {
     background-color: #cc1212;
     color: var(--tecbanWhite01);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn a {    
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-decoration: none;
+    color: var(--tecbanWhite01);
+    font-family: 'Inter', sans-serif !important; 
+}
+
+.btn a:hover {
+    color: var(--tecbanWhite01);
+    font-weight: 700;
 }
 
 

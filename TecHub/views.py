@@ -292,7 +292,7 @@ def realiza_tranferencia(request, pk):
         if Decimal(valor_transferencia) > Decimal(saldo_drex):
             saldo_drex = f'{saldo_drex:,.2f}'.replace(',', '_').replace('.', ',').replace('_', '.')
             context['saldo_drex'] = saldo_drex
-            messages.error(request, f"O valor da final da transferência é maior do que seu saldo DREX")
+            messages.error(request, f"O valor final da transferência é maior do que seu saldo DREX")
         elif valor_transferencia == 0:
             saldo_drex = f'{saldo_drex:,.2f}'.replace(',', '_').replace('.', ',').replace('_', '.')
             context['saldo_drex'] = saldo_drex

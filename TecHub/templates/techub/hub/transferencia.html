@@ -112,15 +112,24 @@
                     </div>
 
                     <!-- ======== Saldo necessário ======== -->
-                    <div id="saldo-necessario">
-                        Saldo em DREX necessário: X$ {{saldo_drex}}
+                    <div class="div-input-campo-saldo-necessario">
+                        <div>
+                            Saldo Necessário em DREX 
+                        </div>
+                        <div id="saldo_necessario">
+                            X$ 0,00
+                        </div>
                     </div>
 
-
-                    <div id="btn-container">
-                        <button id="btn-cadastar">Cadastrar</button>
+                    <!-- ======== Botões ======== -->
+                    <div id="container-btns">
+                        <button class="btn">
+                            <a href="{% url 'TecHub:instituicao_view' pk=instituicao.pk %}">Voltar</a>
+                        </button>
+                        <button class="btn">Transferir</button>
                     </div>
-                </form>
+
+                </form> 
             </div>
         </section>
     </div>
@@ -154,11 +163,16 @@ $(document).ready(function() {
     $('#valor_transferencia').mask("#.##0,90", {reverse: true})
 
     $('#moeda_destino, #valor_transferencia').on('input', function() {
+        
+
         // Obtenha os valores selecionados
         var tipoMoeda = $('#moeda_destino').val();
         var valorTransferenciaBr =$('#valor_transferencia').val();
         var valorTransferenciaUs = valorTransferenciaBr.replace(/\./g, "").replace(",", ".");
         var valorTransferencia = parseFloat(valorTransferenciaUs);
+        console.log(valorTransferencia)
+
+       
 
         // Verifique se os valores são números válidos
         if (!isNaN(valorTransferencia)) {
@@ -176,11 +190,22 @@ $(document).ready(function() {
                         style: 'decimal', // Define o estilo de formatação como decimal
                     };
                     var valorNecessarioDREXFormatado = valorNecessarioDREX.toLocaleString('pt-BR', opcoesDeFormatacao);
-                    $('#saldo_necessario').text('Valor Necessário em DREX: X$' + valorNecessarioDREXFormatado);
+                    $('#saldo_necessario').text('X$ ' + valorNecessarioDREXFormatado);
 
                 })
-        };
-    })
+        } else {
+            valorTransferencia = parseFloat('0');
+            var valorNecessarioDREX = valorTransferencia
+                    var opcoesDeFormatacao = {
+                        minimumFractionDigits: 2, // Define o número mínimo de casas decimais
+                        maximumFractionDigits: 2, // Define o número máximo de casas decimais
+                        useGrouping: true, // Habilita a separação de milhares com ponto
+                        style: 'decimal', // Define o estilo de formatação como decimal
+                    };
+                    var valorNecessarioDREXFormatado = valorNecessarioDREX.toLocaleString('pt-BR', opcoesDeFormatacao);
+                    $('#saldo_necessario').text('X$ ' + valorNecessarioDREXFormatado);
+        }
+    })  
 });
 </script>
 {% endblock %}
