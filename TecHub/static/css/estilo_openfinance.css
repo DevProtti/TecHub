@@ -93,7 +93,6 @@ div div.form-openfinance {
 div div.inputs-openfinance {
     display: flex;
     flex-direction: column;
-    /* border: 1px dashed black; */
     width: 60%;
     height: 80%;
 

@@ -2,7 +2,7 @@
 {% load static %}
 {% block title %}TecHub{% endblock %}
 {% block link %}
-    <link rel="stylesheet" href="{% static 'css/estilo_hub.css' %}">
+    <link rel="stylesheet" href="{% static 'css/estilo_instituicao_view.css' %}">
 {% endblock %}
 
 {% block conteudo %}
@@ -16,30 +16,95 @@
                 </p>
             </div>
             <div id="container-info-instituicao">
-                {% if messages %}
-                    {% for m in messages %}
-                        {{m}}
-                    {% endfor %}
-                {% endif %}
-                <div>
-                    <div>
-                        <p>
-                            {{instituicao.info_instituicao_user.saldo_bancario}}
-                            {{instituicao.info_instituicao_user.saldo_drex}}
-                        </p>
-                    </div>
-                    <div>
-                        <button>
-                            <a href="{% url 'TecHub:realiza_cambio' pk=instituicao.pk %}">Câmbio</a>
-                        </button>
-                    </div>
-                    <div>
-                        <button>
-                            <a href="{% url 'TecHub:realiza_tranferencia' pk=instituicao.pk %}">Transferência</a>
-                        </button>
+                <div id="instituicao-usuario">
+                    <div class="container-foto-nome">
+                        <div class="container-foto">
+                            <i>
+                                <img  class='foto-instituicao' src="{{ instituicao.instituicao_user.foto_instituicao }}" alt="">
+                            </i> 
+                        </div>
+                        <div id="container-nome-instituicao" >
+                            <div class="nome-instituicao">{{instituicao.instituicao_user}}</div>
+                        
+                            <div id="container-info">
+                                <div class="container-label"><label for="input-agencia">AGÊNCIA</label></div>
+                                <input id="input-agencia" readonly type="text" value="{{instituicao.info_instituicao_user.agencia}}">
+                                <br><div class="container-label"><label for="input-conta">CONTA</label></div>
+                                <input id="input-agencia" readonly type="text" value="{{instituicao.info_instituicao_user.conta}}">
+                            </div> 
+                        </div>
+                        <div class="container-foto">
+                            <i>
+                                <img  class='foto-instituicao' src="{{ instituicao.instituicao_user.foto_instituicao }}" alt="">
+                            </i> 
+                        </div>                    
+                    </div>  
+                </div>
+                <hr class="separador">
+                <div id="container-conteudo">
+                    <div id="container-saldos">
+                        <div id="container-real">
+                            <label class="label-saldo" for="saldo_real">Saldo Bancário</label>
+                            <input type="text" id="saldo_real" class="saldo" value=" R$ {{saldo_bancario}}" readonly>
+                        </div>
+                        <div id="container-drex">
+                            <label class="label-saldo" for="saldo_drex">Saldo DREX</label>
+                            <input type="text" id="saldo_drex" class="saldo" value=" X$ {{saldo_drex}}" readonly>  
+                        </div>
+                    </div> 
+                    <div id="container-pai-btns">
+                        <div id="container-botoes-navegacao">
+                            <div class="container-btn">
+                                <button class="btn-navegacao">
+                                    <a href="{% url 'TecHub:realiza_cambio' pk=instituicao.pk %}">
+                                        <i class="fa-solid fa-solid fa-right-left"><br><br><span style="font-family: 'Inter', sans-serif;">Câmbio</span></i>
+                                    </a>  
+                                </button>
+                            </div>
+                            <div class="container-btn">
+                                <button class="btn-navegacao">
+                                    <a href="{% url 'TecHub:realiza_tranferencia' pk=instituicao.pk %}">
+                                        <i class="fa-solid fa-money-bill-transfer"><br><br><span style="font-family: 'Inter', sans-serif;">Transferência</span></i>
+                                    </a>  
+                                </button>
+                            </div>
+                            
+                        </div>
+                        <div id="container-btn-voltar">
+                            <button id="btn-voltar">
+                                <a href="{% url 'TecHub:hub' %}">Voltar</a>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
-    </div>  
-    {% endblock conteudo %} 
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    {% if messages %}
+        {% for m in messages %}
+            <script>
+                Swal.fire({
+                    "title": "{{m}}",
+                    "icon": "success",
+                    "confirmButton": "OK",
+                })
+            </script>
+        {% endfor %}
+    {% endif %}  
+    {% endblock conteudo %}
+    {% block script %}
+    <script src="{% static 'code.jquery.com_jquery-3.7.1.min.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+        var url = $('#url').val();
+        console.log(url)    
+        if (url == '/hub/') {
+            $('#hub').attr('style', 'background-color: #b5a1b1dd!important; border-radius: 10px');
+        }
+    })
+    </script>
+{% endblock %}
+
+    

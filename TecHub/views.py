@@ -28,10 +28,10 @@ def cria_data_por_extenso():
 
 def verifica_existencia_registro(id_conta_user, id_user, id_instituicao_user):
     verificacao = InformacaoClienteOpenFinance.objects.get(
-        info_instituicao_user_id = id_conta_user,
-        instituicao_user_id =  id_instituicao_user,
-        usuario_id = id_user
-        )
+        info_instituicao_user_id=id_conta_user,
+        instituicao_user_id=id_instituicao_user,
+        usuario_id=id_user
+    )
     if verificacao:
         return True
     return False
@@ -95,22 +95,23 @@ def hub_digital(request):
 
 @login_required(login_url='login')
 def open_finance(request):
-    if request.method == 'GET':
-        itens_navegacao = NavItem.objects.order_by('-id')
-        data = cria_data_por_extenso()
-        user_info = request.user
-        info_instituicoes = Instituicao.objects.all().order_by('nome')
-        url = reverse_lazy('TecHub:open_finance')
+    itens_navegacao = NavItem.objects.order_by('-id')
+    data = cria_data_por_extenso()
+    user_info = request.user
+    info_instituicoes = Instituicao.objects.all().order_by('nome')
+    url = reverse_lazy('TecHub:open_finance')
 
-        context = {
-            'itens': itens_navegacao,
-            'info_instituicoes': info_instituicoes,
-            'user_info': user_info,
-            'data': data,
-            'url': url
-        }
+    context = {
+        'itens': itens_navegacao,
+        'info_instituicoes': info_instituicoes,
+        'user_info': user_info,
+        'data': data,
+        'url': url
+    }
+
+    if request.method == 'GET':
         return render(request, template_name='techub/hub/open_finance.html', context=context)
-    if request.method == 'POST':
+    elif request.method == 'POST':
         instituicao = request.POST['instituicao']
         agencia = request.POST.get('agencia')
         conta = request.POST.get('conta')
@@ -119,36 +120,58 @@ def open_finance(request):
 
         # Query da instituicao
         result_query_intituicao = Instituicao.objects.filter(id=instituicao).values('id').first()
-        result_query_user_instituicao = InfoClienteInstituicao.objects.filter(Instituicao_id=instituicao).values('Instituicao_id').first()
+        result_query_user_instituicao = InfoClienteInstituicao.objects.filter(Instituicao_id=instituicao).values(
+            'Instituicao_id').first()
+
+        if not result_query_user_instituicao:
+            result_query_user_instituicao = {'Instituicao_id': 0}
+        if not result_query_intituicao:
+            result_query_intituicao = {'id': 0}
 
         # Query do usuário
-        result_query_user_info = InfoClienteInstituicao.objects.filter(agencia=agencia, conta=conta, senha=senha, usuario=user_id).values('id').first()
-        print(result_query_user_info["id"])          
-        if result_query_intituicao["id"] == result_query_user_instituicao["Instituicao_id"] and result_query_user_info != None :
-                #cria um novo registro no banco de dados
-                registro_user = InformacaoClienteOpenFinance(usuario=request.user, instituicao_user=Instituicao.objects.get(id=instituicao), info_instituicao_user=InfoClienteInstituicao.objects.get(id=result_query_user_info["id"]))
-                registro_user.save()
-                success_url = reverse_lazy('TecHub:hub')
-                return HttpResponseRedirect(redirect_to=success_url)
-           
+        result_query_user_info = InfoClienteInstituicao.objects.filter(agencia=agencia, conta=conta, senha=senha,
+                                                                       usuario=user_id).values('id').first()
+
+        if result_query_intituicao["id"] == result_query_user_instituicao[
+            "Instituicao_id"] and result_query_user_info != None:
+            # cria um novo registro no banco de dados
+            registro_user = InformacaoClienteOpenFinance(usuario=request.user,
+                                                         instituicao_user=Instituicao.objects.get(id=instituicao),
+                                                         info_instituicao_user=InfoClienteInstituicao.objects.get(
+                                                             id=result_query_user_info["id"]))
+            registro_user.save()
+            success_url = reverse_lazy('TecHub:hub')
+            return HttpResponseRedirect(redirect_to=success_url)
+        messages.error(request, 'Não foi possível cadastrar a intituição fiananceira!!')
+        return render(request, template_name='techub/hub/open_finance.html', context=context)
+
 
 def instituicao_view(request, pk):
+    instituicao = InformacaoClienteOpenFinance.objects.get(pk=pk)
+
+    # Formatação dos saldos bancários para a formatação brasileira
+    saldo_bancario = float(instituicao.info_instituicao_user.saldo_bancario)
+    saldo_bancario = f'{saldo_bancario:,.2f}'.replace(',', '_').replace('.', ',').replace('_', '.')
+    saldo_drex = instituicao.info_instituicao_user.saldo_drex
+    saldo_drex = f'{saldo_drex:,.2f}'.replace(',', '_').replace('.', ',').replace('_', '.')
+
+    user_info = request.user
+    data = cria_data_por_extenso()
+    itens_navegacao = NavItem.objects.order_by('-id')
+    url = reverse_lazy('TecHub:hub')
+
+    context = {
+        'instituicao': instituicao,
+        'saldo_bancario': saldo_bancario,
+        'saldo_drex': saldo_drex,
+        'user_info': user_info,
+        'data': data,
+        'itens': itens_navegacao,
+        'url': url
+    }
     if request.method == 'GET':
-        instituicao = InformacaoClienteOpenFinance.objects.get(pk=pk)
-        user_info = request.user
-        data = cria_data_por_extenso()
-        itens_navegacao = NavItem.objects.order_by('-id')
-
-        context = {
-            'instituicao': instituicao,
-            'user_info': user_info,
-            'data': data,
-            'itens': itens_navegacao
-        }
-
         return render(request, template_name='techub/hub/instituicao_view.html', context=context)
 
-    
 
 def realiza_cambio(request, pk):
     instituicao = InformacaoClienteOpenFinance.objects.get(pk=pk)
@@ -156,44 +179,55 @@ def realiza_cambio(request, pk):
     data = cria_data_por_extenso()
     itens_navegacao = NavItem.objects.order_by('-id')
     form = CambioForm()
+    url = reverse_lazy('TecHub:hub')
 
     context = {
-            'instituicao': instituicao,
-            'user_info': user_info,
-            'data': data,
-            'itens': itens_navegacao,
-            'form': form
-        }
-    
-    if request.method == 'GET':        
+        'instituicao': instituicao,
+        'user_info': user_info,
+        'data': data,
+        'itens': itens_navegacao,
+        'form': form,
+        'url': url
+    }
+
+    if request.method == 'GET':
         return render(request, template_name='techub/hub/cambio.html', context=context)
     else:
         form = CambioForm(request.POST)
         if form.is_valid():
             try:
                 form.cleaned_data
-                chave_de_busca = InformacaoClienteOpenFinance.objects.filter(pk=pk).values('info_instituicao_user').first()['info_instituicao_user']
+                chave_de_busca = \
+                    InformacaoClienteOpenFinance.objects.filter(pk=pk).values('info_instituicao_user').first()[
+                        'info_instituicao_user']
                 info_cliente_instituicao = InfoClienteInstituicao.objects.get(pk=chave_de_busca)
                 saldo_bancario = info_cliente_instituicao.saldo_bancario
                 valor_cambio = form.cleaned_data['valor_cambio']
-                
-                if valor_cambio <= saldo_bancario:
+
+                if valor_cambio == 0:
+                    raise ValidationError('O valor não pode ser R$ 0,00')
+                elif valor_cambio <= saldo_bancario:
                     novo_saldo_bancario = saldo_bancario - valor_cambio
-                    novo_saldo_drex = valor_cambio  
+                    novo_saldo_drex = valor_cambio
                     info_cliente_instituicao.saldo_bancario = novo_saldo_bancario
                     info_cliente_instituicao.saldo_drex += novo_saldo_drex
                     info_cliente_instituicao.save()
-                    messages.success(request, 'Câmbio realizado com sucesso')
+                    valor_cambio = f'{valor_cambio:,.2f}'.replace(",", "_") \
+                        .replace(".", ",").replace("_", ".")
+                    messages.success(request, f'Câmbio de R$ {valor_cambio} para X${valor_cambio}\
+                     DREX realizado com sucesso!')
                 else:
                     raise ValidationError('O valor não pode ser maior do que seu saldo bancário')
             except ValidationError as e:
                 mensagem_erro = str(e).removeprefix("['").removesuffix("']")  # Converte o erro em uma mensagem de texto
-                context['erro'] = mensagem_erro
+                messages.error(request, mensagem_erro)
+                saldo_bancario = f'{saldo_bancario:,.2f}'.replace(",", "_") \
+                    .replace(".", ",").replace("_", ".")
+                context["valor_disponivel"] = saldo_bancario
                 return render(request, template_name='techub/hub/cambio.html', context=context)
-            
+
         # Redireciona para a página com as infos da instituiçaõ do ususário
         return HttpResponseRedirect(reverse('TecHub:instituicao_view', kwargs={'pk': pk}))
-
 
 
 def realiza_tranferencia(request, pk):
@@ -202,38 +236,55 @@ def realiza_tranferencia(request, pk):
     data = cria_data_por_extenso()
     itens_navegacao = NavItem.objects.order_by('-id')
     moedas = [
-        (1, 'DREX'),
-        (2, 'e-CNY'),
-        (3, 'Digital Euro '),
-        (4, 'Digital Dollar ')
+        ('CNY', 'e-CNY'),
+        ('EUR', 'Digital Euro '),
+        ('USD', 'Digital Dollar ')
     ]
+    url = reverse_lazy('TecHub:hub')
 
     context = {
         'instituicao': instituicao,
         'user_info': user_info,
         'data': data,
         'itens': itens_navegacao,
-        'moedas': moedas
+        'moedas': moedas,
+        'url': url
     }
 
     if request.method == 'GET':
         return render(request, template_name='techub/hub/transferencia.html', context=context)
     else:
         erros = {}
-        valor_transferencia = float(request.POST.get('valor_transferencia').replace('.', '').replace(',', '.'))
+        input_valor_transferencia = float(request.POST.get('valor_transferencia').replace('.', '').replace(',', '.'))
+        if input_valor_transferencia == '':
+            input_valor_transferencia = 0
 
+        moeda_destino = request.POST.get('moeda_destino')
         # busca as informações do saldo em DREX do cliente
-        chave_de_busca = InformacaoClienteOpenFinance.objects.filter(pk=pk).values('info_instituicao_user').first()['info_instituicao_user']
+        chave_de_busca = InformacaoClienteOpenFinance.objects.filter(pk=pk).values('info_instituicao_user').first()[
+            'info_instituicao_user']
         info_cliente_instituicao = InfoClienteInstituicao.objects.get(pk=chave_de_busca)
-        saldo_drex = info_cliente_instituicao.saldo_drex 
-       
+        saldo_drex = info_cliente_instituicao.saldo_drex
+
+        # consome a API de cotação de moedas
+        url = f'https://economia.awesomeapi.com.br/last/{moeda_destino}-BRL'
+        response = requests.get(url)
+        data = response.json()
+        cotacao = float(data[f'{moeda_destino}BRL']['high'])
+
+        # Define o valor da tranferência multiplicando pelo valor da cotação pelo valor do input mandado
+        valor_transferencia = input_valor_transferencia * cotacao
+
         # Verifica se o valor da transferência é menor ou igual ao saldo em DREX:
         if valor_transferencia > saldo_drex:
-            erros['valor_transferencia'] = "O valor da transferência é maior do que seu saldo DREX"
-        
+            # erros['valor_transferencia'] = f"O valor da transferência é maior do que seu saldo DREX (valor máximo {saldo_drex:.2f})"
+            messages.error(request, f"O valor da transferência é maior do que seu saldo DREX")
+        elif valor_transferencia == 0:
+            erros[
+                'valor_transferencia'] = f"O valor da transferência tem que ser diferente de X$ 0,00 (valor máximo {saldo_drex:.2f})"
         if erros:
             context['erros'] = erros
-            context['valor_transferencia'] = (f'{valor_transferencia:.2f}')
+            context['valor_transferencia'] = f'{valor_transferencia:.2f}'
         else:
             # Retirando o valor transferido do saldo drex do usuario
             info_cliente_instituicao.saldo_drex -= Decimal(valor_transferencia)
@@ -242,5 +293,5 @@ def realiza_tranferencia(request, pk):
 
             # Redireciona para a página com as infos da instituiçaõ do ususário
             return HttpResponseRedirect(reverse('TecHub:instituicao_view', kwargs={'pk': pk}))
-        
+
         return render(request, template_name='techub/hub/transferencia.html', context=context)

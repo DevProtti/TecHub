@@ -27,10 +27,16 @@
                         <br><br>
                         <label for="moeda_destino">Moeda de destino:</label><br>
                         <select name="moeda_destino" id="moeda_destino">
+                            <option value="">Selecione...</option>
                             {% for id, moeda in moedas %}
                                 <option value="{{ id }}">{{ moeda }}</option>
                             {% endfor %}
                         </select>
+
+                        <div id="saldo_necessario">
+                            Saldo Necessário em DREX: <span id="maxvalue">
+                            </span>
+                        </div>
                         <br><br>
                         <button type="submit">Enviar</button>
                         <br><br>
@@ -46,6 +52,9 @@
                         {{mensagem}}
                     </div>
                 </form>
+                <button>
+                    <a href="{% url 'TecHub:instituicao_view' pk=instituicao.pk %}">Voltar</a>
+                </button>
             </div>
         </section>
     </div>  
@@ -53,10 +62,44 @@
 {% block script %}
 <script src="{% static 'code.jquery.com_jquery-3.7.1.min.js' %}"></script>
 <script src="{% static 'jquery.mask.min.js' %}"></script>
-<script type="text/javascript">
+<script>
+$(document).ready(function() {
 
-         $(document).ready(function () {
-         $('#valor_transferencia').mask("#.##0,90", {reverse: true})
-     });
+    var url = $('#url').val();
+    if (url == '/hub/') {
+        $('#hub').attr('style', 'background-color: #b5a1b1dd!important; border-radius: 10px');
+    }
+
+    $('#valor_transferencia').mask("#.##0,90", {reverse: true})
+
+    $('#moeda_destino, #valor_transferencia').on('input', function() {
+        // Obtenha os valores selecionados
+        var tipoMoeda = $('#moeda_destino').val();
+        var valorTransferenciaBr =$('#valor_transferencia').val();
+        var valorTransferenciaUs = valorTransferenciaBr.replace(/\./g, "").replace(",", ".");
+        var valorTransferencia = parseFloat(valorTransferenciaUs);
+
+        // Verifique se os valores são números válidos
+        if (!isNaN(valorTransferencia)) {
+            fetch('https://economia.awesomeapi.com.br/last/'+tipoMoeda+'-BRL')
+                .then(function(response){
+                    return response.json()
+                })
+                .then(function(data){
+                    var cotacao = data[tipoMoeda+'BRL'].high
+                    var valorNecessarioDREX = valorTransferencia * cotacao
+                    var opcoesDeFormatacao = {
+                        minimumFractionDigits: 2, // Define o número mínimo de casas decimais
+                        maximumFractionDigits: 2, // Define o número máximo de casas decimais
+                        useGrouping: true, // Habilita a separação de milhares com ponto
+                        style: 'decimal', // Define o estilo de formatação como decimal
+                    };
+                    var valorNecessarioDREXFormatado = valorNecessarioDREX.toLocaleString('pt-BR', opcoesDeFormatacao);
+                    $('#saldo_necessario').text('Valor Necessário em DREX: $' + valorNecessarioDREXFormatado);
+
+                })
+        };
+    })
+});
 </script>
 {% endblock %}

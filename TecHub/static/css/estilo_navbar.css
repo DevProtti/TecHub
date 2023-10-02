@@ -67,6 +67,9 @@ body {
     font-size: 1.6rem;
 }
 
+.nav_item {
+    margin-top: 1%;
+}
 
 .nav-btn {
     display: flex;
@@ -92,4 +95,6 @@ body {
     align-items: center;
     justify-content: start;
 }
+
+
 

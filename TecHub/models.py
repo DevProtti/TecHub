@@ -96,10 +96,6 @@ class InformacaoClienteOpenFinance(models.Model):
         related_name='info_instituicao_user'
     )
 
-# MOEDAS
-class Moedas(models.Model):
-    pass
-
 
 # Items Navegação
 class NavItem(models.Model):

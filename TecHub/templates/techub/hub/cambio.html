@@ -20,20 +20,40 @@
                     <form action="" method="post">
                         {% csrf_token %}
 
-                        {% if erro %}
-                            <ul>
-                                <li style="color: red;">
-                                    {{erro}}
-                                </li>
-                            </ul>
-                        {% endif %}
                         {{ form.valor_cambio.label }}
                         {{ form.valor_cambio }}
 
                         <button type="submit">Submit</button>
                     </form>
+                    <button>
+                        <a href="{% url 'TecHub:instituicao_view' pk=instituicao.pk %}">Voltar</a>
+                    </button>
                 </div>
             </div>
         </section>
-    </div>  
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {% if messages %}
+        {% for m in messages %}
+            <script>
+                Swal.fire({
+                    "title": "{{m}}",
+                    "text": "Saldo disponível: R$ {{valor_disponivel}}",
+                    "icon": "error",
+                    "confirmButton": "OK",
+                })
+            </script>
+        {% endfor %}
+    {% endif %}  
 {% endblock conteudo %} 
+{% block script %}
+    <script src="{% static 'code.jquery.com_jquery-3.7.1.min.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+        var url = $('#url').val();
+        if (url == '/hub/') {
+            $('#hub').attr('style', 'background-color: #b5a1b1dd!important; border-radius: 10px');
+        }
+    })
+    </script>
+{% endblock %}

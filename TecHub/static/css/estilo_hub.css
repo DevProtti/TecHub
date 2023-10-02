@@ -84,46 +84,202 @@ div p span.data {
 
 div#instituicoes-user{
     display: grid;
-    grid-template-columns: auto auto auto;
+    grid-template-columns: 48.5% 48.5%;
+    grid-template-rows: 47% 47%;
+    gap: 3%;
     height: 82%;
-    gap: 5px;
 }
 
 div div#instituicao-usuario {
     display: flex;
     background-color: white;
-    height: 35%;
-    width: 90%;
+    height: 100%;
     flex-direction: column;
     border-radius: 20px;
+    padding: 2%;
 }
 
 div.container-foto-nome {
     display: flex;
-    height: 60%;
-    width: 30%;
-    flex-direction: column;
-    justify-content: space-evenly;
+    height: 32%;
+    width: 100%;
+    flex-direction: row;
+    /* justify-content: space-evenly; */
     align-items: start;   
-    margin-left: 2rem;
+    flex-wrap: wrap;
+    /* border: 1px dashed black; */
 }
 
 
 div.container-foto {
-    border: 7px solid #aaaaaa69;
+    border: 7px solid #aaaaaa56;
     border-radius: 100%;
     display: flex;
-    height:60%;
-    width: 20%;
-    margin-top: 3%;
+    height:100%;
+    width: 14%;
     justify-content: center;
 }
 
 img.foto-instituicao {
-    padding: 12px;
+    padding: 20%;
     height: 100%;
 }
 
-div.nome-instituicao {
-    
+div#container-nome-instituicao {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding-left: 4%;
+    /* border: 1px dashed black; */
 }
+
+div.nome-instituicao {
+    font-weight: bold;
+    color: var(--tecBanDarkGray);
+    font-size: 2rem;
+}
+
+#container-info {
+    width: 36%;
+    height: 100%;
+    /* border: 1px dashed black; */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.container-label {
+    width: 35%;
+    height: 40%;
+    /* border: 1px dashed black; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px 0 0 3px ;
+    background-color: #999d;
+    color: var(--tecbanWhite01);
+    font-size: 11px;
+}
+
+#input-agencia,
+#input-conta {
+    padding: 2%;
+    width: 55%;
+    height: 40%;
+    border-radius: 0 3px 3px 0;
+    border-left: none;
+    color: #555;
+    box-shadow: 0 0 0 0;
+    border: 1.5px solid #999d;
+    outline: 0;
+}
+
+.separador {
+    border: 0;
+    height: 2.5px;
+    background-image: linear-gradient(to right, transparent, rgb(170, 3, 3), transparent);
+    margin-top: 2%
+}   
+
+#container-saldos{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    /* border: 1px dashed black; */
+    margin-top: .5%;
+    height: 81.5%;
+    justify-content: center;
+    align-items: center;
+}
+
+
+#container-real,
+#container-drex {
+    /* border: 1px dashed black; */
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+    height: 40%;
+    align-items: center;
+    justify-content: center;
+}
+
+
+#container-real::after,
+#container-drex::after {
+    content:"";
+    width: 85px;
+    border: 1px solid #cc1212;
+    position: absolute;
+    margin: 1.5% 0 0 5%;
+}
+
+.saldo {
+    display: flex;
+    width: 50%;
+    height: 100%;
+    font-size: 1.4rem;
+    /* border: 1px dashed black; */
+    box-shadow: 0 0 0;
+    border: none;
+    outline: 0;
+    justify-content: center;
+    align-items: center; 
+    margin-left: 2%;
+    /* color: #555d */
+    color: black
+}
+
+.label-saldo {
+    width: 40%;
+    display: flex;
+    justify-content: end; 
+    color: #555d;
+    font-weight: bold;
+}
+
+#container-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 18%;
+}
+
+
+#btn-acessar {
+    width: 40%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    border: none;
+    background-color: #888;
+    color: var(--tecbanWhite01);
+    transition: 0.35s
+}
+
+#btn-acessar:hover {
+    background-color: #cc1212;
+    color: var(--tecbanWhite01);
+}
+#btn-acessar a {    
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--tecbanWhite01);
+}
+
+#btn-acessar a:hover {
+    color: var(--tecbanWhite01);
+    font-weight: 700;
+    font-size: 1.4rem;
+}
+

@@ -24,12 +24,29 @@
                                     <img  class='foto-instituicao' src="{{ instituicao.instituicao_user.foto_instituicao }}" alt="">
                                 </i> 
                             </div>
-                            <div class="nome-instituicao">{{instituicao.instituicao_user}}</div>   
+                            <div id="container-nome-instituicao" >
+                                <div class="nome-instituicao">{{instituicao.instituicao_user}}</div>
+                            </div>
+                            <div id="container-info">
+                                <div class="container-label"><label for="input-agencia">AGÊNCIA</label></div>
+                                <input id="input-agencia" readonly type="text" value="{{instituicao.info_instituicao_user.agencia}}">
+                                <br><div class="container-label"><label for="input-conta">CONTA</label></div>
+                                <input id="input-agencia" readonly type="text" value="{{instituicao.info_instituicao_user.conta}}">
+                            </div>                     
                         </div>
-                        <div>{{instituicao.info_instituicao_user.saldo_bancario}}</div>
-                        <div>{{instituicao.info_instituicao_user.saldo_drex}}</div>                        
-                        <div>
-                            <button><a href="{% url 'TecHub:instituicao_view' pk=instituicao.id %}">Acessar</a></button>
+                        <hr class="separador">
+                        <div id="container-saldos">
+                            <div id="container-real">
+                                <label class="label-saldo" for="saldo_real">Saldo Bancário:</label>
+                                <input type="text" id="saldo_real" class="saldo" value=" R$ {{instituicao.info_instituicao_user.saldo_bancario}}" readonly>
+                            </div><br>
+                            <div id="container-drex">
+                                <label class="label-saldo" for="saldo_drex">Saldo DREX:</label>
+                                <input type="text" id="saldo_drex" class="saldo" value=" X$ {{instituicao.info_instituicao_user.saldo_drex}}" readonly>  
+                            </div>
+                        </div> 
+                        <div id="container-btn">
+                            <button id="btn-acessar"><a href="{% url 'TecHub:instituicao_view' pk=instituicao.id %}">Acessar</a></button>
                         </div>
                     </div>
                 {% endfor %}
@@ -38,13 +55,17 @@
     </div>  
 {% endblock conteudo %}
 {% block script %}
-<script type="text/javascript">
-    $(document).ready(function () {
+    <script src="{% static 'jquery.mask.min.js' %}"></script>
+    <script src="{% static 'code.jquery.com_jquery-3.7.1.min.js' %}"></script>
+    <script>
+        $(document).ready(function () {
         var url = $('#url').val();
-        var item = $('.nav-item')
         if (url == '/hub/') {
             $('#hub').attr('style', 'background-color: #b5a1b1dd!important; border-radius: 10px');
         }
+
+        $('#saldo_real').val().mask('000.000.000.000.000,00', {reverse: true});
     })
-</script>
+
+    </script>
 {% endblock %}
