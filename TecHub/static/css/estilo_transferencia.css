@@ -1,0 +1,238 @@
+:root {
+    --tecbanBlack01: #000f00!important;
+    --tecbanCyan01: #0ff!important;
+    --tecbanCyan02: rgba(0,255,255,0.611764705882353)!important;
+    --tecbanCyan03: #5ff!important;
+    --tecbanCyan04: rgba(0,255,255,0.4666666666666667)!important;
+    --tecbanGray01: #ecebed!important;
+    --tecbanRed01: #ed1846!important;
+    --tecbanWhite01: #fff!important;
+    --tecbanLightGray: #d3d3d3 !important;
+    --tecBanDarkGray: #999696 !important;
+}
+
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 62.5%;
+    
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #fef1f6;
+    display: flex;
+}
+
+
+/* =============================================== */
+
+
+#container-openfinance-pai {
+    display: flex;
+    width: 85%;
+    height: 100vh;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 2rem;
+}
+
+#conteudo-openfinance {
+    display: flex;
+    flex-direction: column;
+    width: 97%;
+    height: 95vh;
+    /* border: 1px solid black; */
+    justify-content: space-between;
+}
+
+.container-openfinance{
+    display: flex;
+    flex-direction:row;
+    background-color: #fff;
+    width: 100%;
+    height: 15%;
+    border-radius: 20px;
+    align-items: center;
+}
+
+div p.bem-vindo {
+    display: flex;
+    font-size: 1.6rem;
+    width: 50%;
+    max-height: 100%;
+    margin-left: 3rem;
+    flex-direction: column;
+}
+
+div p span.bem-vindo-nome {
+    font-size: 2.2rem;
+    text-transform: capitalize;
+}
+
+div p span.data {
+    font-size: 1.5rem;
+    margin-top: -1rem;
+    color: #555;
+}
+
+div div.form-transferencia {
+    display: flex;
+    background-color: #fff;
+    height: 82%;
+    border-radius:20px;
+    align-items: center;
+    justify-content: center;
+}
+
+div div.inputs-openfinance {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    height: 92%;
+    border: 2px solid red;
+}
+
+label {
+    font-size: 1.6rem;
+    display: block;
+    width: 100%;
+    font-weight: bold;
+    font-family: 'Roboto', monospace;
+    font-size: 1.7rem;
+    color: #000f00dd
+}
+
+.div-input-campo {
+    height: 20%;
+    border: 1px dashed black;
+    margin: 0 0 1rem 0;  
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;  
+}
+
+#container-conta-agencia {
+    height: 100%;
+    width: 100%;
+    /* border: 2px solid red; */
+    display: flex;
+}
+
+#container-agencia,
+#container-conta {
+    /* border: 1px solid forestgreen; */
+    height: 100%;
+    width: 50%;
+}
+
+.input-campo,
+.select {
+    height: 52%;
+    width: 93%;
+    margin-left:-0.5%;
+    border-radius: 0 10px 10px 0;
+    border-left: none;
+    padding: 0 0 0 12px;
+    color: #555 
+}
+
+
+#agencia,
+#conta {
+    width: 85%;
+    height: 100%;
+    display: flex;
+}
+
+.input-conta-agencia{
+    display: flex;
+    flex-direction: row;
+    margin-top: 1%;
+    height: 49%;
+}
+
+.icone-agencia,
+.icone-conta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family:FontAwesome;
+    font-size:2rem;
+    color: var(--tecbanWhite01);
+    background-color: var(--tecBanDarkGray);
+    height: 100%;
+    width: 14%;
+    border-radius: 10px 0 0 10px;
+}
+
+select,
+input {
+    border-left: none;
+    border: 1px solid var(--tecBanDarkGray);
+}
+
+select:focus,
+input:focus {
+    border: 2px solid var(--tecBanDarkGray);
+    border-left: none;
+    outline: 0;
+    
+}
+
+.icone-instituicao,
+.icone-senha{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family:FontAwesome;
+    font-size:2rem;
+    color: var(--tecbanWhite01);
+    background-color: var(--tecBanDarkGray);
+    height: 52%;
+    width: 7%;
+    border-radius: 10px 0 0 10px;
+}
+
+.saldo-necessario {
+    display: flex;
+}
+
+
+
+#btn-container {
+    height: 15%;
+    /* border: 1px dashed black; */
+    margin-top: 4rem;  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;  
+}
+
+
+#btn-cadastar {
+        width: 50%;
+        height: 100%;
+        display: flex;
+        font-size: 1.6rem ;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+        border: none;
+        background-color: #888;
+        color: var(--tecbanWhite01);
+        transition: 0.35s
+}   
+
+#btn-cadastar:hover {
+    background-color: #cc1212;
+    color: var(--tecbanWhite01);
+}
+
+

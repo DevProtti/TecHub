@@ -194,7 +194,6 @@ div.nome-instituicao {
 }
 
 
-
 #container-saldos{
     display: flex;
     flex-wrap: wrap;
@@ -209,8 +208,8 @@ div.nome-instituicao {
 
 #container-real,
 #container-drex {
-    /* border: 1px dashed black; */
-    display: flex;
+    /* border: 1px dashed black;*/
+    display: flex; 
     flex-direction: row;
     width: 50%;
     height: 35%;

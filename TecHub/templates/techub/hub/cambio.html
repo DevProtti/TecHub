@@ -16,18 +16,58 @@
                 </p>
             </div>
             <div id="container-info-instituicao">
-                <div>
-                    <form action="" method="post">
-                        {% csrf_token %}
+                <div id="instituicao-usuario">
+                    <div class="container-foto-nome">
+                        <div class="container-foto">
+                            <i>
+                                <img  class='foto-instituicao' src="{{ instituicao.instituicao_user.foto_instituicao }}" alt="">
+                            </i> 
+                        </div>
+                        <div id="container-nome-instituicao" >
+                            <div class="nome-instituicao">{{instituicao.instituicao_user}}</div>
+                        
+                            <div id="container-info">
+                                <div class="container-label"><label for="input-agencia">AGÊNCIA</label></div>
+                                <input id="input-agencia" readonly type="text" value="{{instituicao.info_instituicao_user.agencia}}">
+                                <br><div class="container-label"><label for="input-conta">CONTA</label></div>
+                                <input id="input-agencia" readonly type="text" value="{{instituicao.info_instituicao_user.conta}}">
+                            </div> 
+                        </div>
+                        <div class="container-foto">
+                            <i>
+                                <img  class='foto-instituicao' src="{{ instituicao.instituicao_user.foto_instituicao }}" alt="">
+                            </i> 
+                        </div>                    
+                    </div>  
+                </div>
+                <hr class="separador">
+                <div id="container-conteudo">
+                    <div id="container-saldos">
+                        <div id="container-real">
+                            <label class="label-saldo" for="saldo_real">Saldo Bancário</label>
+                            <input type="text" id="saldo_real" class="saldo" value=" R$ {{saldo_bancario}}" readonly>
+                        </div>
+                        <div id="container-drex">
+                            <label class="label-saldo" for="saldo_drex">Saldo DREX</label>
+                            <input type="text" id="saldo_drex" class="saldo" value=" X$ {{saldo_drex}}" readonly>  
+                        </div>
+                    </div>
+                    
+                        <form id="form" method="post">
+                            {% csrf_token %}
+    
+                            <div id="container-input">
+                                {{ form }}
+                            </div>
 
-                        {{ form.valor_cambio.label }}
-                        {{ form.valor_cambio }}
+                            <div id="container-btns">
+                                <button class="btn" id="btn-voltar">
+                                    <a href="{% url 'TecHub:instituicao_view' pk=instituicao.pk %}">Voltar</a>
+                                </button>
+                                <button class="btn" type="submit">Converter</button>
+                            </div>
+                        </form>
 
-                        <button type="submit">Submit</button>
-                    </form>
-                    <button>
-                        <a href="{% url 'TecHub:instituicao_view' pk=instituicao.pk %}">Voltar</a>
-                    </button>
                 </div>
             </div>
         </section>
@@ -48,12 +88,22 @@
 {% endblock conteudo %} 
 {% block script %}
     <script src="{% static 'code.jquery.com_jquery-3.7.1.min.js' %}"></script>
+    <script src="{% static 'jquery.mask.min.js' %}"></script>
     <script>
         $(document).ready(function () {
         var url = $('#url').val();
         if (url == '/hub/') {
             $('#hub').attr('style', 'background-color: #b5a1b1dd!important; border-radius: 10px');
         }
+        
+        $('#id_valor_cambio').mask("#.##0,90", {reverse: true})       
+        
+        $(':input').on('focus', function() {
+            this.dataset.placeholder = this.placeholder;
+            this.placeholder = '';
+            }).on('blur', function(){
+            this.placeholder = this.dataset.placeholder;
+        });
     })
     </script>
 {% endblock %}

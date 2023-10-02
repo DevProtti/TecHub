@@ -225,6 +225,7 @@ div.nome-instituicao {
     font-size: 1.4rem;
     /* border: 1px dashed black; */
     box-shadow: 0 0 0;
+    border-radius: 0 10px 10px 0;
     border: none;
     outline: 0;
     justify-content: center;

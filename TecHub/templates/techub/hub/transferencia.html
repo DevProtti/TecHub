@@ -2,62 +2,141 @@
 {% load static %}
 {% block title %}TecHub{% endblock %}
 {% block link %}
-    <link rel="stylesheet" href="{% static 'css/estilo_instituicao_view.css' %}">
+    <link rel="stylesheet" href="{% static 'css/estilo_transferencia.css' %}">
 {% endblock %}
 
 {% block conteudo %}
-    <input type="hidden" id="url" value="{{ url }}"/>
-    <div id="conteudo-hub-pai">
-        <section id="conteudo-hub"> 
-            <div class="container-hub">
-                <p class='bem-vindo'>
-                    <span class='bem-vindo-nome'><b>Bem-vindo {{ user_info.first_name }}</b></span><br>
-                    <span class='data'>{{data}}</span>
-                </p>
-            </div>
-            <div id="container-info-instituicao" style="border: 1px solid black; height: 92.5%; font-size: 1.8rem;">
+<input type="hidden" id="url" value="{{ url }}"/>
+<div id="container-openfinance-pai">
+    <section id="conteudo-openfinance">
+        <div class="container-openfinance">
+            <p class="bem-vindo">
+                <span class="bem-vindo-nome"
+                    ><b>Bem-vindo {{ user_info.first_name }}</b></span
+                ><br />
+                <span class="data">{{data}}</span>
+            </p>
+        </div>
+        <div class="form-transferencia">
+            <div class="inputs-openfinance">
+                <input type="hidden" id="url" value="{{ url }}"/>
+                {% for error in erros %}
+                    <span>{{ error }}</span>
+                {% endfor %}
                 <form method="post">
-                    {%csrf_token%}
-                    <div style="border: 1px dashed black; ">
-                        <label for="saldo_drex">Seu saldo em DREX:</label><br>
-                        <input type="text" id='saldo_drex' name='saldo_drex' value="{{instituicao.info_instituicao_user.saldo_drex}}" readonly disabled>
-                        <br><br>
-                        <label for="valor_transferencia">Valor da transferencia</label><br>
-                        <input type="text" maxlength="18" id='valor_transferencia' name='valor_transferencia' value="{{ valor_transferencia }}"><br>
-                        <br><br>
-                        <label for="moeda_destino">Moeda de destino:</label><br>
-                        <select name="moeda_destino" id="moeda_destino">
-                            <option value="">Selecione...</option>
-                            {% for id, moeda in moedas %}
-                                <option value="{{ id }}">{{ moeda }}</option>
-                            {% endfor %}
-                        </select>
+                    {% csrf_token %}
+                    <!-- ======== Saldo em DREX ======== -->
+                    <div class="div-input-campo">
+                        <label class="label" for="saldo_drex">Saldo DREX</label>
+                        <span class="icone-instituicao">
+                            <i class="fa-solid fa-landmark"></i>
+                        </span>
+                        <input type="text" class="input-campo" id='saldo_drex' name='saldo_drex' value="X$ {{saldo_drex}}" readonly>
+                    </div>
 
-                        <div id="saldo_necessario">
-                            Saldo Necessário em DREX: <span id="maxvalue">
-                            </span>
+                    <!-- ======== Instituição ======== -->
+                    <div class="div-input-campo">
+                        <label class="label" for="instituicao_destino">Instituição</label>
+                        <span class="icone-instituicao">
+                            <i class="fa-solid fa-landmark"></i>
+                        </span>
+                        <select name="instituicao_destino" class="select" id="instituicao_destino" required>
+                            <option value="0">Selecione a instituição...</option>
+                            <option value="">Bank of China - 中国银行</option>
+                            <option value="">Bank of America</option>
+                            <option value="">BNP Paribas</option>
+                            <option value="">Deutsche Bank</option>
+                            <option value="">HSBC</option>
+                        </select>
+                    </div>
+
+                    <!-- ======== Conta| Agência ======== -->
+                    <div class="div-input-campo">
+                        <div id="container-conta-agencia">
+                            <div id="container-agencia">
+                                <label id="label-agencia" for="agencia">Agência</label>
+                                <div class="input-conta-agencia">
+                                    <span class="icone-agencia"><i class="fa-solid fa-house-user"></i></span>
+                                    <input
+                                        id="agencia"
+                                        class="input-campo"
+                                        name="agencia"
+                                        type="text"
+                                        maxlength="5"
+                                        placeholder="Digite sua Agência"
+                                        required
+                                    />
+                                </div>
+                            </div>
+                            <div id="container-conta">
+                                <label id="label-conta" for="conta">Conta</label>
+                                <div class="input-conta-agencia">
+                                    <span class="icone-conta"><i class="fa-solid fa-money-check-dollar"></i></span>
+                                    <input
+                                        id="conta"
+                                        class="input-campo"
+                                        name="conta"
+                                        type="text"
+                                        maxlength="5"
+                                        placeholder="Digite sua Conta"
+                                        required
+                                    />
+                                </div>
+                            </div>
+                            
+    
                         </div>
-                        <br><br>
-                        <button type="submit">Enviar</button>
-                        <br><br>
-                        {% if erros.valor_transferencia %}
-                        <div style="margin-left: 20px;">
-                            <ul>
-                                <li>
-                                    {{erros.valor_transferencia}}
-                                </li>
-                            </ul>
-                        </div>
-                        {% endif %}
-                        {{mensagem}}
+                    </div>
+
+                    <!-- ======== Moeda Destino ======== -->
+                    <div class="div-input-campo">
+                        <label class="label" for="moeda_destino">Moeda</label>
+                        <span class="icone-instituicao">
+                            <i class="fa-solid fa-landmark"></i>
+                        </span>
+                        <select name="moeda_destino" class="select" id="moeda_destino" required>
+                            <option value="">Selecione...</option>
+                                {% for id, moeda in moedas %}
+                                    <option value="{{ id }}">{{ moeda }}</option>
+                                {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- ======== Valor Transferência ======== -->
+                    <div class="div-input-campo">
+                        <label for="valor_transferencia">Valor da transferencia</label>
+                        <span class="icone-senha">
+                            <i class="fa-solid fa-key"></i>
+                        </span>
+                        <input type="text" class="input-campo" maxlength="18" id='valor_transferencia' name='valor_transferencia' value="{{ valor_transferencia }}">
+                    </div>
+
+                    <!-- ======== Saldo necessário ======== -->
+                    <div id="saldo-necessario">
+                        Saldo em DREX necessário: X$ {{saldo_drex}}
+                    </div>
+
+
+                    <div id="btn-container">
+                        <button id="btn-cadastar">Cadastrar</button>
                     </div>
                 </form>
-                <button>
-                    <a href="{% url 'TecHub:instituicao_view' pk=instituicao.pk %}">Voltar</a>
-                </button>
             </div>
         </section>
-    </div>  
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {% if messages %}
+        {% for m in messages %}
+            <script>
+                Swal.fire({
+                    "title": "{{m}}",
+                    "text": "Saldo disponível: X$ {{saldo_drex}}",
+                    "icon": "error",
+                    "confirmButton": "OK",
+                })
+            </script>
+        {% endfor %}
+    {% endif %}    
 {% endblock conteudo %}
 {% block script %}
 <script src="{% static 'code.jquery.com_jquery-3.7.1.min.js' %}"></script>
@@ -70,6 +149,8 @@ $(document).ready(function() {
         $('#hub').attr('style', 'background-color: #b5a1b1dd!important; border-radius: 10px');
     }
 
+    $('#conta').mask('0000000-0');
+    $('#agencia').mask('00000');
     $('#valor_transferencia').mask("#.##0,90", {reverse: true})
 
     $('#moeda_destino, #valor_transferencia').on('input', function() {
@@ -95,7 +176,7 @@ $(document).ready(function() {
                         style: 'decimal', // Define o estilo de formatação como decimal
                     };
                     var valorNecessarioDREXFormatado = valorNecessarioDREX.toLocaleString('pt-BR', opcoesDeFormatacao);
-                    $('#saldo_necessario').text('Valor Necessário em DREX: $' + valorNecessarioDREXFormatado);
+                    $('#saldo_necessario').text('Valor Necessário em DREX: X$' + valorNecessarioDREXFormatado);
 
                 })
         };

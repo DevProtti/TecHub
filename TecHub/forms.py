@@ -3,7 +3,6 @@ from .models import Instituicao, InformacaoClienteOpenFinance, InfoClienteInstit
 from django.core.exceptions import ValidationError
 from django.core.exceptions import ValidationError
 
-
 from django.utils.translation import gettext_lazy as _
 
 
@@ -13,8 +12,16 @@ class FormLogin(forms.Form):
 
 
 class CambioForm(forms.Form):
-    valor_cambio = forms.DecimalField(decimal_places=2, required=True)
+    valor_cambio = forms.CharField(
+        max_length=15,
+        required=True,
+        label='Valor câmbio',
+        label_suffix='',
+    )
 
+    valor_cambio.widget.attrs.update(
+        {'placeholder': 'Insira o valor'}
+    )
 
 
 MOEDAS = [
@@ -28,7 +35,7 @@ MOEDAS = [
 #     moeda_origem = forms.ChoiceField(
 #         label="Moeda de destino",
 #         choices=MOEDAS)
-    
+
 #     valor_trasferencia = forms.DecimalField(
 #         decimal_places=2
 #     )
@@ -37,4 +44,3 @@ MOEDAS = [
 #         decimal_places=2,
 #         required=True
 #     )
-        

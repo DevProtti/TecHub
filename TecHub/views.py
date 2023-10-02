@@ -180,9 +180,15 @@ def realiza_cambio(request, pk):
     itens_navegacao = NavItem.objects.order_by('-id')
     form = CambioForm()
     url = reverse_lazy('TecHub:hub')
+    saldo_bancario = float(instituicao.info_instituicao_user.saldo_bancario)
+    saldo_bancario = f'{saldo_bancario:,.2f}'.replace(',', '_').replace('.', ',').replace('_', '.')
+    saldo_drex = instituicao.info_instituicao_user.saldo_drex
+    saldo_drex = f'{saldo_drex:,.2f}'.replace(',', '_').replace('.', ',').replace('_', '.')
 
     context = {
         'instituicao': instituicao,
+        'saldo_bancario': saldo_bancario,
+        'saldo_drex': saldo_drex,
         'user_info': user_info,
         'data': data,
         'itens': itens_navegacao,
@@ -202,11 +208,12 @@ def realiza_cambio(request, pk):
                         'info_instituicao_user']
                 info_cliente_instituicao = InfoClienteInstituicao.objects.get(pk=chave_de_busca)
                 saldo_bancario = info_cliente_instituicao.saldo_bancario
-                valor_cambio = form.cleaned_data['valor_cambio']
-
+                valor_cambio = float(str(form.cleaned_data['valor_cambio']).replace(".", "") \
+                                     .replace(",", "."))
                 if valor_cambio == 0:
                     raise ValidationError('O valor não pode ser R$ 0,00')
                 elif valor_cambio <= saldo_bancario:
+                    valor_cambio = Decimal(valor_cambio)
                     novo_saldo_bancario = saldo_bancario - valor_cambio
                     novo_saldo_drex = valor_cambio
                     info_cliente_instituicao.saldo_bancario = novo_saldo_bancario
@@ -214,7 +221,7 @@ def realiza_cambio(request, pk):
                     info_cliente_instituicao.save()
                     valor_cambio = f'{valor_cambio:,.2f}'.replace(",", "_") \
                         .replace(".", ",").replace("_", ".")
-                    messages.success(request, f'Câmbio de R$ {valor_cambio} para X${valor_cambio}\
+                    messages.success(request, f'Câmbio de R$ {valor_cambio} para X$ {valor_cambio}\
                      DREX realizado com sucesso!')
                 else:
                     raise ValidationError('O valor não pode ser maior do que seu saldo bancário')
@@ -242,31 +249,35 @@ def realiza_tranferencia(request, pk):
     ]
     url = reverse_lazy('TecHub:hub')
 
+    # busca as informações do saldo em DREX do cliente
+    chave_de_busca = InformacaoClienteOpenFinance.objects.filter(pk=pk).values('info_instituicao_user').first()[
+        'info_instituicao_user']
+    info_cliente_instituicao = InfoClienteInstituicao.objects.get(pk=chave_de_busca)
+    saldo_drex = info_cliente_instituicao.saldo_drex
+    saldo_drex = f'{saldo_drex:,.2f}'.replace(',', '_').replace('.', ',').replace('_', '.')
+
     context = {
         'instituicao': instituicao,
         'user_info': user_info,
         'data': data,
         'itens': itens_navegacao,
         'moedas': moedas,
-        'url': url
+        'url': url,
+        'saldo_drex': saldo_drex
     }
 
     if request.method == 'GET':
         return render(request, template_name='techub/hub/transferencia.html', context=context)
     else:
-        erros = {}
-        input_valor_transferencia = float(request.POST.get('valor_transferencia').replace('.', '').replace(',', '.'))
+
+        # Tranformações necessárias para tranformar para float
+        input_valor_transferencia = request.POST.get('valor_transferencia').replace('.', '').replace(',', '.')
         if input_valor_transferencia == '':
             input_valor_transferencia = 0
-
-        moeda_destino = request.POST.get('moeda_destino')
-        # busca as informações do saldo em DREX do cliente
-        chave_de_busca = InformacaoClienteOpenFinance.objects.filter(pk=pk).values('info_instituicao_user').first()[
-            'info_instituicao_user']
-        info_cliente_instituicao = InfoClienteInstituicao.objects.get(pk=chave_de_busca)
-        saldo_drex = info_cliente_instituicao.saldo_drex
+        input_valor_transferencia = float(input_valor_transferencia)
 
         # consome a API de cotação de moedas
+        moeda_destino = request.POST.get('moeda_destino')
         url = f'https://economia.awesomeapi.com.br/last/{moeda_destino}-BRL'
         response = requests.get(url)
         data = response.json()
@@ -274,17 +285,18 @@ def realiza_tranferencia(request, pk):
 
         # Define o valor da tranferência multiplicando pelo valor da cotação pelo valor do input mandado
         valor_transferencia = input_valor_transferencia * cotacao
+        # Retorna o valor do saldo em DREX para Decimal
+        saldo_drex = Decimal(saldo_drex.replace(".", "").replace(",", "."))
 
-        # Verifica se o valor da transferência é menor ou igual ao saldo em DREX:
-        if valor_transferencia > saldo_drex:
-            # erros['valor_transferencia'] = f"O valor da transferência é maior do que seu saldo DREX (valor máximo {saldo_drex:.2f})"
-            messages.error(request, f"O valor da transferência é maior do que seu saldo DREX")
+        # Faz as validações necessárias
+        if Decimal(valor_transferencia) > Decimal(saldo_drex):
+            saldo_drex = f'{saldo_drex:,.2f}'.replace(',', '_').replace('.', ',').replace('_', '.')
+            context['saldo_drex'] = saldo_drex
+            messages.error(request, f"O valor da final da transferência é maior do que seu saldo DREX")
         elif valor_transferencia == 0:
-            erros[
-                'valor_transferencia'] = f"O valor da transferência tem que ser diferente de X$ 0,00 (valor máximo {saldo_drex:.2f})"
-        if erros:
-            context['erros'] = erros
-            context['valor_transferencia'] = f'{valor_transferencia:.2f}'
+            saldo_drex = f'{saldo_drex:,.2f}'.replace(',', '_').replace('.', ',').replace('_', '.')
+            context['saldo_drex'] = saldo_drex
+            messages.error(request, f"O valor da transferência tem que ser diferente de X$ 0,00")
         else:
             # Retirando o valor transferido do saldo drex do usuario
             info_cliente_instituicao.saldo_drex -= Decimal(valor_transferencia)
